@@ -1,32 +1,29 @@
 package tests;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.*;
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.Callable;
+
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selenide.*;
 
 public class TextBoxTests {
 
     @BeforeAll
     static void beforeAll() {
-
-        Configuration.browser = "firefox";
         Configuration.browserSize = "1920x1080";
-        Configuration.timeout = 20000;
-        Configuration.holdBrowserOpen = true;
-
-
-        Configuration.headless = false; // Сначала запустим в видимом режиме
+        Configuration.baseUrl = "https://demoqa.com";
         Configuration.pageLoadStrategy = "eager";
+        Configuration.holdBrowserOpen = true;
     }
-
     @Test
     void fillFormTest() {
-        System.out.println("Запуск теста с Firefox...");
-
-        open("https://demoqa.com/text-box");
-        System.out.println("Страница загружена");
+        open("/text-box");
+        executeJavaScript("$('footer').remove()");
+        executeJavaScript("$('#fixedban').remove()");
+        executeJavaScript("$('iframe').remove()");
 
         $("#userName").setValue("Alex");
         $("#userEmail").setValue("alex@egorov.com");
@@ -40,7 +37,5 @@ public class TextBoxTests {
                 text("Some street 1"),
                 text("Another street 1")
         );
-
-        System.out.println("Тест успешно завершен!");
     }
 }
